@@ -1,0 +1,11 @@
+id,login_id,login_password,teacher_name,phone
+1,teacher01,pass123,"Alex Johnson",010-1234-5678
+2,teacher02,pass123,"Sarah Miller",010-9876-5432
+3,teacher03,pass123,"David Lee",010-5555-1111
+4,teacher04,pass123,"Emily Wilson",010-2222-3333
+5,teacher05,pass123,"Michael Chen",010-7777-8888
+6,teacher06,pass123,"Jessica Kim",010-4444-9999
+7,teacher07,pass123,"James Smith",010-6666-0000
+8,teacher08,pass123,"Olivia Brown",010-1111-2222
+9,teacher09,pass123,"Chris Davis",010-3333-4444
+10,teacher10,pass123,"Sophia Garcia",010-8888-7777

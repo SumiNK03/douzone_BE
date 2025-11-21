@@ -1,0 +1,11 @@
+id,login_id,login_password,student_name,phone
+1,student01,pass123,김태희,010-3333-1111
+2,student02,pass123,이준수,010-4444-2222
+3,student03,pass123,박서준,010-5555-3333
+4,student04,pass123,최유나,010-6666-4444
+5,student05,pass123,정민호,010-7777-5555
+6,student06,pass123,한소희,010-8888-6666
+7,student07,pass123,오세훈,010-9999-7777
+8,student08,pass123,윤지우,010-0000-8888
+9,student09,pass123,장원영,010-1111-9999
+10,student10,pass123,임영웅,010-2222-0000
