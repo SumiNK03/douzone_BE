@@ -85,7 +85,7 @@ public class EnrollServiceImpl implements EnrollService {
                                 })
                                 .collect(Collectors.toList());
 
-                // 시작시간만 추추출하여 리스트로 반환
+                // 시작시간만 추출하여 리스트로 반환
                 return availableSlots.stream()
                                 .map(TeacherTime::getStartTime)
                                 .distinct() // 중복된 시간 제거 (예: 월/화/수 모두 13:00가 공강일 경우)
