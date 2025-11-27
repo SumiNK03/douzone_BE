@@ -17,8 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import com.douzone.douzone_BE.entity.Student;
 
+import com.douzone.douzone_BE.config.JwtUtil;
+import com.douzone.douzone_BE.entity.Student;
 
 @RestController
 @RequestMapping("/login")
@@ -32,7 +33,8 @@ public class LoginController {
 
     // 인코딩
     private String safeEncode(String value) {
-        if (value == null) return "";
+        if (value == null)
+            return "";
         try {
             return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
         } catch (Exception e) {
@@ -44,23 +46,25 @@ public class LoginController {
     public ResponseEntity<?> studentLogin(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String studentId = body.get("studentId");
         String password = body.get("password");
+
         boolean loginResult = loginService.studentLogin(studentId, password);
 
         if (loginResult) {
             Student student = studentRepository.findByLoginId(studentId);
-            Cookie idCookie = new Cookie("studentId", safeEncode(student.getId().toString()));
-            idCookie.setPath("/");
-            Cookie roleCookie = new Cookie("role", "student");
-            roleCookie.setPath("/");
-            String studentName = studentRepository.findByLoginId(studentId).getStudentName();
-            Cookie nameCookie = new Cookie("name", safeEncode(studentName));
-            nameCookie.setPath("/");
+            String token = JwtUtil.generateToken(
+                    student.getId().toString(),
+                    "student",
+                    student.getStudentName());
 
-            response.addCookie(idCookie);
-            response.addCookie(roleCookie);
-            response.addCookie(nameCookie);
+            Cookie jwtCookie = new Cookie("token", token);
+            jwtCookie.setPath("/");
+            jwtCookie.setHttpOnly(true);
+            response.addCookie(jwtCookie);
 
-            return ResponseEntity.ok("Student login successful");
+            // ✅ 응답에 토큰도 포함
+            return ResponseEntity.ok(Map.of(
+                    "token", token,
+                    "message", "Student login successful"));
         } else {
             return ResponseEntity.status(401).body("Invalid student ID or password");
         }
@@ -70,22 +74,24 @@ public class LoginController {
     public ResponseEntity<?> teacherLogin(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String teacherId = body.get("teacherId");
         String password = body.get("password");
+
         boolean loginResult = loginService.teacherLogin(teacherId, password);
 
         if (loginResult) {
-            Cookie idCookie = new Cookie("teacherId", safeEncode(teacherId));
-            idCookie.setPath("/");
-            Cookie roleCookie = new Cookie("role", "teacher");
-            roleCookie.setPath("/");
-            String teacherName = teacherRepository.findByLoginId(teacherId).getTeacherName();
-            Cookie nameCookie = new Cookie("name", safeEncode(teacherName));
-            nameCookie.setPath("/");
+            var teacher = teacherRepository.findByLoginId(teacherId); // DB에서 엔티티 가져오기
+            String token = JwtUtil.generateToken(
+                    teacher.getId().toString(), // ✅ PK 사용
+                    "teacher",
+                    teacher.getTeacherName());
 
-            response.addCookie(idCookie);
-            response.addCookie(roleCookie);
-            response.addCookie(nameCookie);
+            Cookie jwtCookie = new Cookie("token", token);
+            jwtCookie.setPath("/");
+            jwtCookie.setHttpOnly(true);
+            response.addCookie(jwtCookie);
 
-            return ResponseEntity.ok("Teacher login successful");
+            return ResponseEntity.ok(Map.of(
+                    "token", token,
+                    "message", "Teacher login successful"));
         } else {
             return ResponseEntity.status(401).body("Invalid teacher ID or password");
         }
@@ -112,5 +118,26 @@ public class LoginController {
             return ResponseEntity.status(409).body("Teacher ID already exists");
         }
     }
-    
+
+    @PostMapping("/teacherLeave")
+    public ResponseEntity<?> teacherLeave(@RequestBody Map<String, String> body) {
+        String teacherId = body.get("teacherId");
+        boolean leaveResult = loginService.teacherLeave(teacherId);
+        if (leaveResult) {
+            return ResponseEntity.ok("Teacher account deleted successfully");
+        } else {
+            return ResponseEntity.status(404).body("Teacher ID not found");
+        }
+    }
+
+    @PostMapping("/studentLeave")
+    public ResponseEntity<?> studentLeave(@RequestBody Map<String, String> body) {
+        String studentId = body.get("studentId");
+        boolean leaveResult = loginService.studentLeave(studentId);
+        if (leaveResult) {
+            return ResponseEntity.ok("Student account deleted successfully");
+        } else {
+            return ResponseEntity.status(404).body("Student ID not found");
+        }
+    }
 }

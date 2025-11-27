@@ -8,7 +8,7 @@ import com.douzone.douzone_BE.entity.TeacherTime;
 import com.douzone.douzone_BE.entity.Subject;
 import com.douzone.douzone_BE.repository.*;
 import com.douzone.douzone_BE.dto.*;
-import com.douzone.douzone_BE.service.inter.EnrollService;;
+import com.douzone.douzone_BE.service.inter.EnrollService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -241,7 +241,7 @@ public class EnrollServiceImpl implements EnrollService {
                 List<EnrollmentInfo> enrollmentInfoList = enrollmentInfoRepository
                                 .findByStudentIdAndStatus(studentId, status);
 
-                List<EnrollmentInfoDto> dtoList = new ArrayList<EnrollmentInfoDto>();
+                List<EnrollmentInfoDto> dtoList = new ArrayList<>();
 
                 if (enrollmentInfoList.isEmpty()) {
                         System.out.println("해당 학생(" + studentId + ")의 수강 정보가 존재하지 않습니다.");

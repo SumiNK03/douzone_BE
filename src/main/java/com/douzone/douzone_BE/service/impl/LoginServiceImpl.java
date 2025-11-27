@@ -1,15 +1,10 @@
 package com.douzone.douzone_BE.service.impl;
 
 import com.douzone.douzone_BE.service.inter.LoginService;
-
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.douzone.douzone_BE.repository.TeacherRepository;
-import com.douzone.douzone_BE.repository.StudentRepository;
 import com.douzone.douzone_BE.repository.StudentRepository;
 import com.douzone.douzone_BE.entity.Student;
 import com.douzone.douzone_BE.entity.Teacher;
@@ -91,6 +86,30 @@ public class LoginServiceImpl implements LoginService {
 
         teacherRepository.save(newTeacher);
         return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean studentLeave(String studentId) {
+        Student student = studentRepository.findById(Long.parseLong(studentId)).orElse(null);
+        if (student != null) {
+            studentRepository.delete(student);
+            return true;
+        } else {
+            return false; // 학생을 찾을 수 없음
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean teacherLeave(String teacherId) {
+        Teacher teacher = teacherRepository.findById(Long.parseLong(teacherId)).orElse(null);
+        if (teacher != null) {
+            teacherRepository.delete(teacher);
+            return true;
+        } else {
+            return false; // 교사를 찾을 수 없음
+        }
     }
 
     

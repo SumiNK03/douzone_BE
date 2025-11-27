@@ -104,7 +104,8 @@ public class EnrollIntegrationTest {
 
         // 실행: 수강신청 (월수금)
         List<Integer> days = Arrays.asList(1,3,5);
-        enrollService.enrollClass(student.getId(), teacher.getTeacherName(), subject.getSubjectName(), days);
+        LocalTime time = LocalTime.of(13, 0); // 13:00
+        enrollService.enrollClass(student.getId(), teacher.getId(), subject.getId(), days, time);
 
         // 검증: 각 시간의 status가 1로 변경되고 student, clazz 필드가 설정되어 있어야 함
         TeacherTime after1 = teacherTimeRepository.findById(t1.getId()).orElseThrow();
