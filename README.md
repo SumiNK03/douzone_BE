@@ -32,11 +32,11 @@
 
 ## 주요 기능
 
-- **회원 관리** - 회원가입, 로그인, JWT 토큰 발급 및 검증
-- **강좌 관리** - 영어 강좌 조회, 필터링, 정렬
-- **수강신청** - 강좌 신청 및 취소, 신청 현황 조회
-- **사용자 정보** - 마이페이지, 신청 강좌 목록
-- **일정 관리** - 강의 일정 조회
+- **회원 관리** - 강사/학생 회원가입, 로그인, 회원탈퇴
+- **강좌 관리** - 수업 가능 과목 조회, 과목별 담당 강사 조회
+- **수강신청** - 강좌 신청, 강사 공강 시간 조회
+- **강사 기능** - 강사 정보 조회/수정, 강의 일정 조회
+- **학생 기능** - 학생 정보 조회/수정, 수강 일정 조회
 
 ---
 
@@ -72,4 +72,48 @@ Swagger UI에서 전체 API를 확인하고 테스트할 수 있습니다.
 
 **[Swagger UI 바로가기](http://douzonesumin.kro.kr:8080/swagger-ui.html)**
 
-주요 엔드포인트:
+### 로그인 API
+
+- `POST /login/teacherSignup` - 강사 회원가입
+- `POST /login/teacherLogin` - 강사 로그인
+- `POST /login/teacherLeave` - 강사 회원탈퇴
+- `POST /login/studentSignup` - 학생 회원가입
+- `POST /login/studentLogin` - 학생 로그인
+- `POST /login/studentLeave` - 학생 회원탈퇴
+
+### 수강신청 API
+
+- `POST /enroll/enroll` - 수강 신청
+- `GET /enroll/teacherEnrollInfo` - 강사 수강신청 정보 조회
+- `GET /enroll/studentEnrollInfo` - 학생 수강신청 정보 조회
+- `GET /enroll/availableTime` - 강사 공강 시간 조회
+- `GET /enroll/availableTeacher` - 과목별 담당 강사 조회
+- `GET /enroll/availableSubject` - 수업 가능 과목 목록 조회
+
+### 강사 API
+
+- `POST /teacher/edit` - 강사 정보 수정
+- `GET /teacher/schedule` - 강사 강의 일정 조회
+- `GET /teacher/info` - 강사 정보 조회
+
+### 학생 API
+
+- `POST /student/edit` - 학생 정보 수정
+- `GET /student/schedule` - 학생 수강 일정 조회
+- `GET /student/info` - 학생 정보 조회
+
+---
+
+## 설치 및 실행
+
+### 필수 요구사항
+
+- Java 17 이상
+- MySQL 8.0 이상
+- Gradle
+
+### 설치
+
+```bash
+git clone https://github.com/SumiNK03/douzone_BE.git
+cd douzone_BE
